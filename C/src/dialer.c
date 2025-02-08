@@ -1,7 +1,3 @@
-//Wargames Movie Simulator
-//Written by Andy Glenn
-//(c) 2023
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,16 +17,6 @@ void fix_backspace_key() {
 	char system_command[100];
 	snprintf(system_command, sizeof(system_command), "stty erase ^H");
     system(system_command);
-}
-
-void play_phone_number(const char *phone_number) {
-    for (int i = 0; i < strlen(phone_number); i++) {
-        if (isdigit(phone_number[i])) {
-            char command[100];
-            snprintf(command, sizeof(command), "aplay samples/%c.wav -q & sleep 0.2; pkill -n aplay", phone_number[i]);
-            system(command);
-        }
-    }
 }
 
 void clear_input_buffer() {
@@ -195,21 +181,12 @@ void read_and_print_systems_found() {
             fflush(stdout); // Flush the output buffer to ensure the prompt is displayed
             usleep(1000000);
             printf("ATD%03d%03d%04d\n", system_area_code[index], system_pfx[index], system_num[index]);
-            char my_phone_number[15]; // This array can hold a number of the form "xxx-xxx-xxxx" plus a null terminator
-            sprintf(my_phone_number, "%03d%03d%04d", system_area_code[index], system_pfx[index], system_num[index]);
-    		play_phone_number(my_phone_number);
-            //snprintf(system_command, sizeof(system_command), "aplay samples/dtmf-wopr.wav -q");
-            //system(system_command);
             usleep(250000);
             if(strcmp(system_name[index],"system")==0) {
-                snprintf(system_command, sizeof(system_command), "aplay samples/phone-busy-1.wav -q");
-    		    system(system_command);
                 clear_screen();
                 fflush(stdout); // Flush the output buffer to ensure the prompt is displayed
                 usleep(2000000);
             } else {
-                snprintf(system_command, sizeof(system_command), "aplay samples/1200-modem.wav -q");
-    		    system(system_command);
                 clear_screen();
                 fflush(stdout); // Flush the output buffer to ensure the prompt is displayed
                 usleep(2000000);
@@ -468,12 +445,6 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             }
         }
         if (hit == 'Y') {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf1, i);
-    		play_phone_number(my_phone_number);
-
-            snprintf(command, sizeof(command), "aplay samples/1200-modem.wav -q");
-            system(command);
-
             printf("\033[7m(%03d) ",area_code);
             printf("%03d %04d", pf1, i);
             printf("\033[0m     ");
@@ -482,32 +453,17 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             // Save the hit to the file
             saveNumber(area_code, pf1, i, system_name[n], system_action[n]);
         } else {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf1, i);
-    		play_phone_number(my_phone_number);
-
             random_number = rand() % 10;
 
             if (random_number == 1 && s1 == 0) {
                 //only play this sample once
                 s1 = 1;
-                snprintf(command, sizeof(command), "aplay samples/sauls-fish-market.wav -q");
-                system(command);
             } else if (random_number == 2) {
-                snprintf(command, sizeof(command), "aplay samples/phone-busy-1.wav -q");
-                system(command); 
             } else if (random_number == 3) {
-                snprintf(command, sizeof(command), "aplay samples/hello.wav -q");
-                system(command);
             } else if (random_number == 4) {
-                snprintf(command, sizeof(command), "aplay samples/disconnected-2x.wav -q");
-                system(command);
             } else if (random_number == 5 && s5 == 0) {
                 s5 = 1;
-                snprintf(command, sizeof(command), "aplay samples/funny-answer-phone.wav -q");
-                system(command);
             } else {
-                snprintf(command, sizeof(command), "aplay samples/phone-beep.wav -q");
-                system(command);
             }
             printf("(%03d) ",area_code);
             printf("%03d %04d", pf1, i);
@@ -530,12 +486,6 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             }
         }
         if (hit == 'Y') {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf2, i);
-    		play_phone_number(my_phone_number);
-
-            snprintf(command, sizeof(command), "aplay samples/1200-modem.wav -q");
-            system(command);
-
             printf("\033[7m(%03d) ",area_code);
             printf("%03d %04d", pf2, i);
             printf("\033[0m     ");
@@ -544,32 +494,17 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             // Save the hit to the file
             saveNumber(area_code, pf2, i, system_name[n], system_action[n]);
         } else {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf2, i);
-    		play_phone_number(my_phone_number);
-
             random_number = rand() % 10;
 
             if (random_number == 1 && s1 == 0) {
                 //only play this sample once
                 s1 = 1;
-                snprintf(command, sizeof(command), "aplay samples/sauls-fish-market.wav -q");
-                system(command);
             } else if (random_number == 2) {
-                snprintf(command, sizeof(command), "aplay samples/phone-busy-1.wav -q");
-                system(command); 
             } else if (random_number == 3) {
-                snprintf(command, sizeof(command), "aplay samples/hello.wav -q");
-                system(command);
             } else if (random_number == 4) {
-                snprintf(command, sizeof(command), "aplay samples/disconnected-2x.wav -q");
-                system(command);
             } else if (random_number == 5 && s5 == 0) {
                 s5 = 1;
-                snprintf(command, sizeof(command), "aplay samples/funny-answer-phone.wav -q");
-                system(command);
             } else {
-                snprintf(command, sizeof(command), "aplay samples/phone-beep.wav -q");
-                system(command);
             }
             printf("(%03d) ",area_code);
             printf("%03d %04d", pf2, i);
@@ -592,12 +527,6 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             }
         }
         if (hit == 'Y') {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf3, i);
-    		play_phone_number(my_phone_number);
-
-            snprintf(command, sizeof(command), "aplay samples/1200-modem.wav -q");
-            system(command);
-
             printf("\033[7m(%03d) ",area_code);
             printf("%03d %04d", pf3, i);
             printf("\033[0m     ");
@@ -606,32 +535,17 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             // Save the hit to the file
             saveNumber(area_code, pf3, i, system_name[n], system_action[n]);
         } else {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf3, i);
-    		play_phone_number(my_phone_number);
-
             random_number = rand() % 10;
 
             if (random_number == 1 && s1 == 0) {
                 //only play this sample once
                 s1 = 1;
-                snprintf(command, sizeof(command), "aplay samples/sauls-fish-market.wav -q");
-                system(command);
             } else if (random_number == 2) {
-                snprintf(command, sizeof(command), "aplay samples/phone-busy-1.wav -q");
-                system(command); 
             } else if (random_number == 3) {
-                snprintf(command, sizeof(command), "aplay samples/hello.wav -q");
-                system(command);
             } else if (random_number == 4) {
-                snprintf(command, sizeof(command), "aplay samples/disconnected-2x.wav -q");
-                system(command);
             } else if (random_number == 5 && s5 == 0) {
                 s5 = 1;
-                snprintf(command, sizeof(command), "aplay samples/funny-answer-phone.wav -q");
-                system(command);
             } else {
-                snprintf(command, sizeof(command), "aplay samples/phone-beep.wav -q");
-                system(command);
             }
             printf("(%03d) ",area_code);
             printf("%03d %04d", pf3, i);
@@ -654,12 +568,6 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             }
         }
         if (hit == 'Y') {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf4, i);
-    		play_phone_number(my_phone_number);
-
-            snprintf(command, sizeof(command), "aplay samples/1200-modem.wav -q");
-            system(command);
-
             printf("\033[7m(%03d) ",area_code);
             printf("%03d %04d", pf4, i);
             printf("\033[0m\n");
@@ -668,38 +576,19 @@ void dialer(int system_area_code[], int system_pfx[], int system_num[], char sys
             // Save the hit to the file
             saveNumber(area_code, pf4, i, system_name[n], system_action[n]);
         } else {
-            sprintf(my_phone_number, "%03d%03d%04d", area_code, pf4, i);
-    		play_phone_number(my_phone_number);
-
             random_number = rand() % 10;
 
             if (random_number == 1 && s1 == 0) {
                 //only play this sample once
                 s1 = 1;
-                snprintf(command, sizeof(command), "aplay samples/sauls-fish-market.wav -q");
-                system(command);
             } else if (random_number == 2) {
-                snprintf(command, sizeof(command), "aplay samples/phone-busy-1.wav -q");
-                system(command); 
             } else if (random_number == 3) {
-                snprintf(command, sizeof(command), "aplay samples/hello.wav -q");
-                system(command);
             } else if (random_number == 4) {
-                snprintf(command, sizeof(command), "aplay samples/disconnected-2x.wav -q");
-                system(command);
             } else if (random_number == 5 && s5 == 0) {
                 s5 = 1;
-                snprintf(command, sizeof(command), "aplay samples/funny-answer-phone.wav -q");
-                system(command);
             } else if (random_number == 6) {
-                snprintf(command, sizeof(command), "aplay samples/telephone-ringing.wav -q");
-                system(command);
             } else if (random_number == 7) {
-                snprintf(command, sizeof(command), "aplay samples/telephone-ringing.wav -q");
-                system(command);
             } else {
-                snprintf(command, sizeof(command), "aplay samples/phone-beep.wav -q");
-                system(command);
             }
             printf("(%03d) ",area_code);
             printf("%03d %04d", pf4, i);
@@ -746,4 +635,3 @@ int main() {
 
     exit(0);
 }
-

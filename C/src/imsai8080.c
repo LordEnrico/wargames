@@ -1,7 +1,3 @@
-//Wargames Movie Simulator
-//Written by Andy Glenn
-//(c) 2023
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,16 +25,6 @@ void fix_backspace_key() {
 	char system_command[100];
 	snprintf(system_command, sizeof(system_command), "stty erase ^H");
     system(system_command);
-}
-
-void play_phone_number(const char *phone_number) {
-    for (int i = 0; i < strlen(phone_number); i++) {
-        if (isdigit(phone_number[i])) {
-            char command[100];
-            snprintf(command, sizeof(command), "aplay samples/%c.wav -q & sleep 0.2; pkill -n aplay", phone_number[i]);
-            system(command);
-        }
-    }
 }
 
 void toLowerCase(char* str) {
@@ -257,13 +243,7 @@ int main(){
 			printf("type Control-? for command list\n");
 			sleep(2);
 			printf("ATDT3115554855\n");
-			char my_phone_number[] = "3115554855";
-    		play_phone_number(my_phone_number);
-			//snprintf(system_command, sizeof(system_command), "aplay samples/dtmf-wopr.wav -q");
-            //system(system_command);
-            usleep(250000);
-			snprintf(system_command, sizeof(system_command), "aplay samples/1200-modem.wav -q");
-    		system(system_command);
+			usleep(250000);
 			sleep(5);
 			clear_screen();
             printf("CONNECTING\n\n");
@@ -291,4 +271,3 @@ int main(){
 	bye:
 	return 0;
 }
-
