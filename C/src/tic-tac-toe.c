@@ -1,7 +1,3 @@
-//Wargames Movie Simulator
-//Written by Andy Glenn
-//(c) 2023
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -227,15 +223,12 @@ void draw_symbol(int row, int col, char symbol) {
     int start_col = cols - (cell_size * grid_size + 1);
     int x = (start_col + col * (cell_size * 2) - (cell_size * 2)) - 2;
     int y = start_row + row * cell_size + (cell_size / 2) - 2;
-    char command[200];
 
     if (symbol == 'O') {
         draw_nought(y, x);
     } else {
         draw_cross(y, x);
     }
-    snprintf(command, sizeof(command), "aplay samples/learn.wav -q &");
-    system(command);
 }
 
 void get_player_choice(int *row, int *col, char side) {
@@ -379,7 +372,6 @@ void get_cpu_times(long long *idle, long long *total) {
 }
 
 void monitor_cpu_utilization() {
-    char command[200];
     long long prev_idle, prev_total, idle, total;
     get_cpu_times(&prev_idle, &prev_total);
     usleep(5000); // Sleep for 5 milliseconds
@@ -409,15 +401,11 @@ void monitor_cpu_utilization() {
             gotoxy(0, 15);
             printf("\033[31m");
             printf("SYSTEM OVERLOAD\n");
-            snprintf(command, sizeof(command), "aplay samples/caught-in-a-loop.wav -q");
-            system(command);
             usleep(2000000);
             printf("\033[5m");
             printf("MISSILE SYSTEMS OFF-LINE\n");
             printf("\033[0m");
             gotoxy(0, 23);
-            snprintf(command, sizeof(command), "aplay samples/short-circuit-sound.wav -q");
-            system(command);
             usleep(5000000);
             exit(1); // check for this condition where this program is called
         }
@@ -430,7 +418,6 @@ int main() {
     fix_backspace_key();
     int users;
     char player1, player2;
-    char command[200];
 
     start_game:;
 
